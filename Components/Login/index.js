@@ -14,12 +14,34 @@ import {
   Content,
   Header
 } from "native-base";
+//my import
+import authStore from "../../store/authStore";
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: "",
+      password: ""
+    };
+  }
   static navigationOptions = {
     title: "Login"
   };
+
+  handleLogin() {
+    authStore.loginUser(this.state, this.props.navigation);
+  }
+
+  handleRegister() {
+    authStore.registerUser(this.state, this.props.navigation);
+  }
+
   render() {
+    if (authStore.user) {
+      this.props.navigation.navigate("CoffeeList");
+    }
     return (
       <Content>
         <Header transparent />
@@ -38,7 +60,12 @@ class Login extends Component {
                     marginBottom: 10
                   }}
                 >
-                  <Input autoCorrect={false} autoCapitalize="none" />
+                  <Input
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    value={this.state.username}
+                    onChangeText={username => this.setState({ username })}
+                  />
                 </Item>
                 <Body>
                   <Label style={{ color: "white" }}>Password</Label>
@@ -51,23 +78,17 @@ class Login extends Component {
                     autoCorrect={false}
                     secureTextEntry
                     autoCapitalize="none"
+                    value={this.state.password}
+                    onChangeText={password => this.setState({ password })}
                   />
                 </Item>
               </Form>
             </Body>
           </ListItem>
-          <Button
-            full
-            success
-            onPress={() => this.props.navigation.replace("CoffeeList")}
-          >
+          <Button full success onPress={() => this.handleLogin()}>
             <Text>Login</Text>
           </Button>
-          <Button
-            full
-            warning
-            onPress={() => this.props.navigation.replace("CoffeeList")}
-          >
+          <Button full warning onPress={() => this.handleRegister()}>
             <Text>Register</Text>
           </Button>
         </List>

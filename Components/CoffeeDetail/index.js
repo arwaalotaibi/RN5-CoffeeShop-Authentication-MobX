@@ -34,7 +34,11 @@ class CoffeeDetail extends Component {
   }
   static navigationOptions = ({ navigation }) => ({
     title: navigation.getParam("shop", {}).name,
-    headerRight: <Quantity route="CoffeeCart" />
+    headerRight: (
+      <Quantity
+      // route="CoffeeCart"
+      />
+    )
   });
   changeDrink(value) {
     this.setState({
